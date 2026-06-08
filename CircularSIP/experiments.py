@@ -87,7 +87,7 @@ def objective_function(points):
 
 
 # Take the 2nd term in each constraint and do a 1st order approximation of it. This is for the relaxation of nonconvex constraints
-def linearized_sip_constraint(x_k, x_k1, x_curr_new, x_next_new, c, radius):
+def linearized_sip_constraint(x_k, x_k1, x_new_k, x_new_k1, c, radius):
     # We are going to compute the minimizer t_star. I talk about how to solve t_star in the report.
     denominator = (x_k1 - x_k) @ (x_k1 - x_k)
     if denominator < 1e-8:     # This is to prevent division by 0
@@ -107,47 +107,43 @@ def linearized_sip_constraint(x_k, x_k1, x_curr_new, x_next_new, c, radius):
     offset = radius - min_distance  # This is sort of our constraint. Offset must be <= 0
     gradient = - (closest_to_center - c) / min_distance
     
-    # Map the constraint smoothly to both waypoint variables using the chain rule
-    # Note the '+' sign correctly establishes a restrictive outer boundary
-    return offset + (1 - t_star) * gradient @ (x_curr_new - x_k) \
-                  + t_star * gradient @ (x_next_new - x_k1) <= 0
+    # Below is just a fancy way of writing the linearized restriction. 
+    # I just factored out (1 - t_star)
+    return offset + (1 - t_star) * gradient @ (x_new_k - x_k) + t_star * gradient @ (x_new_k1 - x_k1) <= 0
 
 
-# =============================================================================
-# MAIN AUTOMATION EXECUTION LOOP
-# =============================================================================
+# Running experiments
 for run in range(1, N_EXAMPLES + 1):
     print(f"Generating example {run}/{N_EXAMPLES}...")
 
-    # Center placement bounds safely padded from workspace margins
-    centers = np.random.uniform(0.1 + radius, 0.9 - radius, size=(num_obstacles, 2))
+    centers = np.random.uniform(0.1, 0.9, size=(num_obstacles, 2))
 
-    # Stage 1: Call global relaxation model
+    # we initialize our trajectory with the solution to the relaxation
+    # this helps us get a global solution
     initial_points = Run_Relaxation_problem(radius, centers, x0, xK)
-
-    solutions = [initial_points] 
-    values = [objective_function(initial_points).value] 
+    solutions = [initial_points] # stores trajectories at all iterations for plotting
+    values = [objective_function(initial_points).value] # stores objective values at all iterations for showing evolution
     failed = False 
 
-    # Stage 2: Local SIP refinement loop
     while True:
-        points = solutions[-1] 
-        new_points = cp.Variable(points.shape)  
+        points = solutions[-1] # previous trajectory
+        new_points = cp.Variable(points.shape) # points that make sure the lines connecting them dont go thru obstacle
         constraints = [
-            new_points[0] == points[0], 
-            new_points[-1] == points[-1] 
+            new_points[0] == points[0],  # initial point is fixed
+            new_points[-1] == points[-1] # kth final point is fixed
         ]
 
         # Process constraints segment-by-segment to capture continuous geometry
         for k in range(len(points) - 1):
-            p_curr = points[k]
-            p_next = points[k+1]
-            p_curr_new = new_points[k]
-            p_next_new = new_points[k+1]
+            x_k = points[k]
+            x_k1 = points[k+1]
+            x_new_k = new_points[k]
+            x_new_k1 = new_points[k+1]
             
             for c in centers:
+                # linearized obstacle avoidance
                 constraints.append(
-                    linearized_sip_constraint(p_curr, p_next, p_curr_new, p_next_new, c, radius)
+                    linearized_sip_constraint(x_k, x_k1, x_new_k, x_new_k1, c, radius)
                 )
                 
         obj = objective_function(new_points)
@@ -162,7 +158,7 @@ for run in range(1, N_EXAMPLES + 1):
             failed = True
             break
             
-        # Convergence threshold calculation
+        # Convergence check.
         if abs(values[-1] - prob.value) / prob.value < tol:
             break
         solutions.append(new_points.value)
@@ -172,18 +168,16 @@ for run in range(1, N_EXAMPLES + 1):
         print(f"  Skipping run {run}: Local solver failure or infeasible geometric layout.")
         continue
 
-    # Render Visual Plot Map
+    # Plot result.
     plt.figure()
     plt.axis('equal')
     plt.xlim(-0.1, 1.1)
     plt.ylim(-0.1, 1.1)
     
-    # Draw circular obstacles matching your specification
     for c in centers:   
         patch = Circle(c, radius, facecolor='lightcoral', edgecolor='black', zorder=1)
         plt.gca().add_patch(patch)
         
-    # Render development history tracking line paths
     for idx, (pts, value) in enumerate(zip(solutions, values)):
         rounded_value = np.round(value, 5)
         alpha_val = 1.0 if idx == len(solutions)-1 else 0.3

@@ -7,7 +7,7 @@ from matplotlib.patches import Circle
 N_EXAMPLES = 5                          # Number of random examples to generate
 OUTPUT_FOLDER = "Experiment_Results"    # Folder where images will be saved
 radius = .1                             # Circle obstacle radius
-num_obstacles = 5                       # Number of obstacles per example
+num_obstacles = 10                      # Number of obstacles per example
 tol = 1e-3                              # Convergence threshold
 K = 21                                  # How many points in our trajectory
 x0 = [0, 0]                             # Starting point

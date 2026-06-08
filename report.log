@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.1)  6 JUN 2026 16:26
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.1)  8 JUN 2026 15:42
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -260,42 +260,57 @@ Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1370.
 Package xcolor Info: Model `Gray' substituted by `gray' on input line 1371.
 Package xcolor Info: Model `wave' substituted by `hsb' on input line 1372.
 )
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count306
+\float@exts=\toks24
+\float@box=\box57
+\@float@everytoks=\toks25
+\@floatcapt=\box58
+)
 (/usr/local/texlive/2026basic/texmf-dist/tex/latex/l3backend/l3backend-pdftex.d
 ef
 File: l3backend-pdftex.def 2025-10-09 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count306
-) (./report.aux)
+\l__color_backend_stack_int=\count307
+) (./report.aux
+
+LaTeX Warning: Label `fig:square-obstacles-examples' multiply defined.
+
+
+LaTeX Warning: Label `fig:square-obstacles-examples' multiply defined.
+
+)
 \openout1 = `report.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 17.
-LaTeX Font Info:    ... okay on input line 17.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 17.
-LaTeX Font Info:    ... okay on input line 17.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 17.
-LaTeX Font Info:    ... okay on input line 17.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 17.
-LaTeX Font Info:    ... okay on input line 17.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 17.
-LaTeX Font Info:    ... okay on input line 17.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 17.
-LaTeX Font Info:    ... okay on input line 17.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 17.
-LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
 
 -- Lines per column: 56 (exact).
 (/usr/local/texlive/2026basic/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count307
+\scratchcounter=\count308
 \scratchdimen=\dimen183
-\scratchbox=\box57
-\nofMPsegments=\count308
-\nofMParguments=\count309
-\everyMPshowfont=\toks24
-\MPscratchCnt=\count310
+\scratchbox=\box59
+\nofMPsegments=\count309
+\nofMParguments=\count310
+\everyMPshowfont=\toks26
+\MPscratchCnt=\count311
 \MPscratchDim=\dimen184
-\MPnumerator=\count311
-\makeMPintoPDFobject=\count312
-\everyMPtoPDFconversion=\toks25
+\MPnumerator=\count312
+\makeMPintoPDFobject=\count313
+\everyMPtoPDFconversion=\toks27
 )
 (/usr/local/texlive/2026basic/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.s
 ty
@@ -307,17 +322,146 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-LaTeX Font Info:    Trying to load font information for U+msa on input line 30.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 63.
 
  (/usr/local/texlive/2026basic/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 30.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 63.
 
 
 (/usr/local/texlive/2026basic/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
+Overfull \hbox (15.55008pt too wide) detected at line 96
+\OMS/cmsy/m/n/10 r[]k\OML/cmm/m/it/10 x\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 k\OT1/
+cmr/m/n/10 ) \OMS/cmsy/m/n/10 ^^@ \OML/cmm/m/it/10 c[]\OMS/cmsy/m/n/10 k[] \OT1
+/cmr/m/n/10 = []
+ []
+
+<SquareObstacles/ReportImages/goodExample.png, id=1, 589.7232pt x 313.17pt>
+File: SquareObstacles/ReportImages/goodExample.png Graphic file (type png)
+<use SquareObstacles/ReportImages/goodExample.png>
+Package pdftex.def Info: SquareObstacles/ReportImages/goodExample.png  used on 
+input line 117.
+(pdftex.def)             Requested size: 201.60077pt x 107.05937pt.
+[1{/usr/local/texlive/2026basic/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/
+usr/local/texlive/2026basic/texmf-dist/fonts/enc/dvips/base/8r.enc}
+
+
+]
+<SquareObstaclesRevised/ReportImages/goodExample1.png, id=21, 589.7232pt x 313.
+17pt>
+File: SquareObstaclesRevised/ReportImages/goodExample1.png Graphic file (type p
+ng)
+<use SquareObstaclesRevised/ReportImages/goodExample1.png>
+Package pdftex.def Info: SquareObstaclesRevised/ReportImages/goodExample1.png  
+used on input line 149.
+(pdftex.def)             Requested size: 80.64185pt x 42.82088pt.
+<SquareObstaclesRevised/ReportImages/goodExample2.png, id=22, 589.7232pt x 313.
+17pt>
+File: SquareObstaclesRevised/ReportImages/goodExample2.png Graphic file (type p
+ng)
+<use SquareObstaclesRevised/ReportImages/goodExample2.png>
+Package pdftex.def Info: SquareObstaclesRevised/ReportImages/goodExample2.png  
+used on input line 151.
+(pdftex.def)             Requested size: 80.64185pt x 42.82088pt.
+<SquareObstaclesRevised/ReportImages/goodExample3.png, id=23, 589.7232pt x 313.
+17pt>
+File: SquareObstaclesRevised/ReportImages/goodExample3.png Graphic file (type p
+ng)
+<use SquareObstaclesRevised/ReportImages/goodExample3.png>
+Package pdftex.def Info: SquareObstaclesRevised/ReportImages/goodExample3.png  
+used on input line 153.
+(pdftex.def)             Requested size: 80.64185pt x 42.82088pt.
+
+Overfull \hbox (10.02556pt too wide) detected at line 224
+[]
+ []
+
+[2 <./SquareObstacles/ReportImages/goodExample.png> <./SquareObstaclesRevised/R
+eportImages/goodExample1.png> <./SquareObstaclesRevised/ReportImages/goodExampl
+e2.png> <./SquareObstaclesRevised/ReportImages/goodExample3.png>]
+<CircularSIP/ReportImages/goodExample1.png, id=31, 842.14626pt x 436.63126pt>
+File: CircularSIP/ReportImages/goodExample1.png Graphic file (type png)
+<use CircularSIP/ReportImages/goodExample1.png>
+Package pdftex.def Info: CircularSIP/ReportImages/goodExample1.png  used on inp
+ut line 260.
+(pdftex.def)             Requested size: 80.64185pt x 41.80685pt.
+<CircularSIP/ReportImages/goodExample2.png, id=32, 608.0316pt x 313.17pt>
+File: CircularSIP/ReportImages/goodExample2.png Graphic file (type png)
+<use CircularSIP/ReportImages/goodExample2.png>
+Package pdftex.def Info: CircularSIP/ReportImages/goodExample2.png  used on inp
+ut line 262.
+(pdftex.def)             Requested size: 80.64185pt x 41.53543pt.
+<CircularSIP/ReportImages/goodExample3.png, id=33, 608.0316pt x 313.17pt>
+File: CircularSIP/ReportImages/goodExample3.png Graphic file (type png)
+<use CircularSIP/ReportImages/goodExample3.png>
+Package pdftex.def Info: CircularSIP/ReportImages/goodExample3.png  used on inp
+ut line 264.
+(pdftex.def)             Requested size: 80.64185pt x 41.53543pt.
+
+Overfull \hbox (5.52896pt too wide) detected at line 301
+[]
+ []
+
+<SquareSIP/ReportImages/goodExample1.png, id=34, 608.0316pt x 313.17pt>
+File: SquareSIP/ReportImages/goodExample1.png Graphic file (type png)
+<use SquareSIP/ReportImages/goodExample1.png>
+Package pdftex.def Info: SquareSIP/ReportImages/goodExample1.png  used on input
+ line 310.
+(pdftex.def)             Requested size: 80.64185pt x 41.53543pt.
+<SquareSIP/ReportImages/goodExample2.png, id=35, 608.0316pt x 330.5148pt>
+File: SquareSIP/ReportImages/goodExample2.png Graphic file (type png)
+<use SquareSIP/ReportImages/goodExample2.png>
+Package pdftex.def Info: SquareSIP/ReportImages/goodExample2.png  used on input
+ line 312.
+(pdftex.def)             Requested size: 80.64185pt x 43.83586pt.
+<SquareSIP/ReportImages/goodExample3.png, id=36, 608.0316pt x 313.17pt>
+File: SquareSIP/ReportImages/goodExample3.png Graphic file (type png)
+<use SquareSIP/ReportImages/goodExample3.png>
+Package pdftex.def Info: SquareSIP/ReportImages/goodExample3.png  used on input
+ line 314.
+(pdftex.def)             Requested size: 80.64185pt x 41.53543pt.
+<GoodExamples/goodExample1.png, id=37, 608.0316pt x 313.17pt>
+File: GoodExamples/goodExample1.png Graphic file (type png)
+<use GoodExamples/goodExample1.png>
+Package pdftex.def Info: GoodExamples/goodExample1.png  used on input line 327.
+
+(pdftex.def)             Requested size: 80.64185pt x 41.53543pt.
+<GoodExamples/goodExample2.png, id=38, 608.0316pt x 313.17pt>
+File: GoodExamples/goodExample2.png Graphic file (type png)
+<use GoodExamples/goodExample2.png>
+Package pdftex.def Info: GoodExamples/goodExample2.png  used on input line 329.
+
+(pdftex.def)             Requested size: 80.64185pt x 41.53543pt.
+<GoodExamples/goodExample3.png, id=39, 608.0316pt x 313.17pt>
+File: GoodExamples/goodExample3.png Graphic file (type png)
+<use GoodExamples/goodExample3.png>
+Package pdftex.def Info: GoodExamples/goodExample3.png  used on input line 331.
+
+(pdftex.def)             Requested size: 80.64185pt x 41.53543pt.
+<BadExamples/badExample1.png, id=40, 608.0316pt x 313.17pt>
+File: BadExamples/badExample1.png Graphic file (type png)
+<use BadExamples/badExample1.png>
+Package pdftex.def Info: BadExamples/badExample1.png  used on input line 332.
+(pdftex.def)             Requested size: 80.64185pt x 41.53543pt.
+<BadExamples/badExample2.png, id=41, 608.0316pt x 520.8258pt>
+File: BadExamples/badExample2.png Graphic file (type png)
+<use BadExamples/badExample2.png>
+Package pdftex.def Info: BadExamples/badExample2.png  used on input line 334.
+(pdftex.def)             Requested size: 80.64185pt x 69.07663pt.
+<BadExamples/badExample3.png, id=42, 608.0316pt x 313.17pt>
+File: BadExamples/badExample3.png Graphic file (type png)
+<use BadExamples/badExample3.png>
+Package pdftex.def Info: BadExamples/badExample3.png  used on input line 336.
+(pdftex.def)             Requested size: 80.64185pt x 41.53543pt.
+[3 <./CircularSIP/ReportImages/goodExample1.png> <./CircularSIP/ReportImages/go
+odExample2.png> <./CircularSIP/ReportImages/goodExample3.png> <./SquareSIP/Repo
+rtImages/goodExample1.png> <./SquareSIP/ReportImages/goodExample2.png> <./Squar
+eSIP/ReportImages/goodExample3.png> <./GoodExamples/goodExample1.png> <./GoodEx
+amples/goodExample2.png> <./GoodExamples/goodExample3.png> <./BadExamples/badEx
+ample1.png> <./BadExamples/badExample2.png> <./BadExamples/badExample3.png>]
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -329,37 +473,44 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[1{/usr/local/texlive/2026basic/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/
-usr/local/texlive/2026basic/texmf-dist/fonts/enc/dvips/base/8r.enc}
+[4
 
-
-]
-(./report.aux)
+] (./report.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
 
 
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 4180 strings out of 469006
- 65321 string characters out of 5454814
- 478071 words of memory out of 5000000
- 32842 multiletter control sequences out of 15000+600000
- 664593 words of font info for 111 fonts, out of 8000000 for 9000
+ 4350 strings out of 469006
+ 71555 string characters out of 5454814
+ 493640 words of memory out of 5000000
+ 33015 multiletter control sequences out of 15000+600000
+ 661030 words of font info for 98 fonts, out of 8000000 for 9000
  319 hyphenation exceptions out of 8191
- 57i,8n,65p,339b,278s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/local/texlive/2026basic/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></u
-sr/local/texlive/2026basic/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/l
-ocal/texlive/2026basic/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/
-texlive/2026basic/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on report.pdf (1 page, 56793 bytes).
+ 57i,12n,65p,316b,278s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/local/texlive/2026basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmex1
+0.pfb></usr/local/texlive/2026basic/texmf-dist/fonts/type1/public/amsfonts/cm/c
+mmi10.pfb></usr/local/texlive/2026basic/texmf-dist/fonts/type1/public/amsfonts/
+cm/cmmi5.pfb></usr/local/texlive/2026basic/texmf-dist/fonts/type1/public/amsfon
+ts/cm/cmmi7.pfb></usr/local/texlive/2026basic/texmf-dist/fonts/type1/public/ams
+fonts/cm/cmr10.pfb></usr/local/texlive/2026basic/texmf-dist/fonts/type1/public/
+amsfonts/cm/cmr5.pfb></usr/local/texlive/2026basic/texmf-dist/fonts/type1/publi
+c/amsfonts/cm/cmr7.pfb></usr/local/texlive/2026basic/texmf-dist/fonts/type1/pub
+lic/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2026basic/texmf-dist/fonts/type1
+/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2026basic/texmf-dist/fonts/ty
+pe1/urw/times/utmb8a.pfb></usr/local/texlive/2026basic/texmf-dist/fonts/type1/u
+rw/times/utmbi8a.pfb></usr/local/texlive/2026basic/texmf-dist/fonts/type1/urw/t
+imes/utmr8a.pfb></usr/local/texlive/2026basic/texmf-dist/fonts/type1/urw/times/
+utmri8a.pfb>
+Output written on report.pdf (4 pages, 1421512 bytes).
 PDF statistics:
- 29 PDF objects out of 1000 (max. 8388607)
- 17 compressed objects within 1 object stream
+ 116 PDF objects out of 1000 (max. 8388607)
+ 51 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 81 words of extra memory for PDF output out of 10000 (max. 10000000)
 

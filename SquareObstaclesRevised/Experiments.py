@@ -8,7 +8,7 @@ from matplotlib.patches import Rectangle
 N_EXAMPLES = 5                          # Number of random examples to generate
 OUTPUT_FOLDER = "Experiment_Results"    # Folder where images will be saved
 radius = .1                             # Square obstacle half-width
-num_obstacles = 5                       # Number of obstacles per example
+num_obstacles = 8                       # Number of obstacles per example
 tol = 1e-3                              # Convergence threshold
 K = 21                                  # How many points in our trajectoryd
 x0 = [0, 0]                             # Starting point

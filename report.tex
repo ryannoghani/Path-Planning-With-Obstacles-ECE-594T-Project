@@ -14,79 +14,75 @@
 \usepackage{xcolor}
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{float}
+\usepackage{hyperref}
 
 \newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \raggedbottom
 \begin{document}
-
 \title{Path Planning with Obstacles\\}
-
 \author{\IEEEauthorblockN{Ryan Noghani}
 \IEEEauthorblockA{\textit{Department of Computer Science} \\
 \textit{University of California, Santa Barbara}\\
 ryannoghani@ucsb.edu}
 }
-
 \maketitle
-
 \begin{abstract} 
+    This report covers path planning with square and circular obstacles, a which is a nonconvex optimization problem. My main 3 efforts were 
+    getting the solutions to be globally optimal, constraining the entire continuous trajectory from hitting obstacles, 
+    and extending the example in lecture to work for square shaped obstacles. \textbf{NOTE: you can find all my projects including code in this repo: \url{https://github.com/ryannoghani/Path-Planning-With-Obstacles-ECE-594T-Project}}
 \end{abstract}
-
 \section{Introduction}
-
-\textbf{NOTE: you can find all my project including code in this repo https://github.com/ryannoghani/Path-Planning-With-Obstacles-ECE-594T-Project}\\
 Chapter 4 of the class course notes \cite{b1} covered nonconvex optimization methods. One of the examples 
-shown was "path planning with obstacle-avoidance constraints", where given a starting and ending point, a 
-robot must find the shortest distance path while avoiding 2d circle obstacles. These 2d circles caused the 
-feasible set to become nonconvex, making this a nonconvex optimization problem. The approaches used to solve 
-this problem included 
-Difference of Convex Functions, and a later extension that used Convex Relaxation and Rounding to find 
+shown was ``path planning with obstacle-avoidance constraints'', where given a starting and ending point, a 
+robot must find the shortest distance path while avoiding 2D circular obstacles. These 2D circles cause the 
+feasible set to become nonconvex, making this a nonconvex optimization problem. The approach used to solve 
+this problem was ``Difference of 
+Convex Functions'', and ``Convex Relaxation and Rounding'' later in the chapter to find 
 a good intial trajectory for the CVXPY convex optimization solver to start with. This allows for the solver
 to find a globally optimal trajectory.
 
 I found this problem interesting and wanted to do a project about it.
-Since the example only uses circular obstacles, I was curious if I could extend the methods shown in class to 
-work for other obstacle shapes. I did not get as far as I wanted to with this, but I was able to create 
-algorithms that can handle squares.
+Since the example only works with circular obstacles, I was curious if I could use the methods shown in class to 
+work for other obstacle shapes. I was too ambitious and did not get as far as I wanted to with this, but I was able to create 
+an algorithm that can handle squares.
 
-My project also fixes the issue of the lines connecting points of the trajectory hitting obstacles. I do this 
+My project also fixes the issue of when the lines connecting trajectory points cross through obstacles. I do this 
 using Semi Infinite Programming (SIP), which I will talk more about in the report.
 
 \section{Technical Approach}
 
-
 \subsection{Path planning with square obstacles}
 
 The example in class \cite{b1} first does linear restrictions on the constraints dealing with the obstacles.
-These constraints are of the form $r_i - \norm{x(k)-c_i}_2 \le 0$ for $i = 1,...,n$, where $r_i$ is the
+These constraints are of form $r_i - \norm{x(k)-c_i}_2 \le 0$ for $i = 1,...,n$, where $r_i$ is the
 radius of the $i_{th}$ circle, $x(k)$ is the $k_{th}$ point of the trajectory, $c_i$ is the center 
 of the $i_{th}$ circle, and $n$ is the number of circles in the problem.
 
-The linear restriction comes from the idea of Difference of Convex Functions. I.e. the first term and
-second term $r_i$ and $\norm{x(k)-c_i}_2$ are both convex functions with respect to x(k). 
-Suppose I have an initial guess for the trajectory, where the points are $a_1, ..., a_n$.
+The linear restriction comes from the idea of Difference of Convex Functions. I.e., the first term and
+second term $r_i$ and $\norm{x(k)-c_i}_2$ are both convex functions with respect to $x(k)$. 
+Suppose I have an initial guess for the trajectory, where the trajectory points are $a_1, ..., a_K$.
 We have a lower
-bound for both functions but specifically we use \\
-$\norm{x(k)-c_i}_2 \ge \norm{a_k-c_i}_2 + (\frac{a_k - c_i}{\norm{a_k - c_i}_2})^T(x(k)-a_k)$, which is a 
-result of convexity. This is simply saying the hyperplane approximation of \\
+bound for both functions using the first order condition for convexity, but specifically we use the lower bound for the norm term.
+This looks like: \\
+$\norm{x(k)-c_i}_2 \ge \norm{a_k-c_i}_2 + (\frac{a_k - c_i}{\norm{a_k - c_i}_2})^T(x(k)-a_k)$. This is simply saying the hyperplane approximation of \\
 $\norm{x(k)-c_i}_2$ 
-tangent to the point $a_k$ at is a lower bound for $\norm{x(k)-c_i}_2$. This implies that\\ 
+centered at $a_k$ is a lower bound for $\norm{x(k)-c_i}_2$. This implies that\\ 
 $-\norm{x(k)-c_i}_2 \le -\norm{a_k-c_i}_2 - (\frac{a_k - c_i}{\norm{a_k - c_i}_2})^T(x(k)-a_k)$, which implies that\\
 $r_i - \norm{x(k)-c_i}_2 \le r_i - \norm{a_k-c_i}_2 - (\frac{a_k - c_i}{\norm{a_k - c_i}_2})^T(x(k)-a_k)$. The convex 
-restriction is to constrain this upper bound by $\le$, 
-AKA:\\ $r_i - \norm{a_k-c_i}_2 - (\frac{a_k - c_i}{\norm{a_k - c_i}_2})^T(x(k)-a_k) \le 0$
+restriction is to constrain this upper bound by $\le0$, 
+AKA: $r_i - \norm{a_k-c_i}_2 - (\frac{a_k - c_i}{\norm{a_k - c_i}_2})^T(x(k)-a_k) \le 0$
 In case the difference between $x(k)$ and $a_k$ is confusing, we are taking our previous trajectory solution
-$a_1,...,a_n$ and are solving a new optimization problem with linear hyperplane constraints about $a_1,...,a_n$, 
-with a solution $x_1,...,x_n$. At first, these trajectories may hit the obstacles, but every iteration improves 
+$a_1,...,a_n$ and are solving a new optimization problem with linear hyperplane constraints about $a_1,...,a_K$ 
+with variables $x_1,...,x_n$. At first, these trajectories may hit the obstacles, but every iteration improves 
 until no obstacles are hit and the Sequential Quadratic Program converges. 
 
 My implementation changes the constraint so that the obstacles being avoided are now squares. This is done using 
-the infinity norm in constraints of the form \\
-$r_i - \norm{x(k) - c_i} \le 0$. However, one issue I encountered is computing the tangent hyperplane upper bound 
+the infinity norm in constraints rather than the 2 norm. This looks like: \\
+$r_i - \norm{x(k) - c_i}_\infty \le 0$. However, one issue I encountered is computing the tangent hyperplane upper bound 
 requires computing the gradient. However, the infinity norm is not differentiable \cite{b2}. At first I thought of approximating
-the infinity norm with a differentiable p norm, where p is very large but not infinity. However, I realized this 
+the infinity norm with a p norm, where p is very large but not infinity. However, I realized this 
 wasn't necessary and decided to use subgradients instead. Thus I define
 \begingroup
 \setlength{\abovedisplayskip}{5pt}
@@ -100,22 +96,23 @@ $x(k)$ and $c_i$ are points on a 2D plane, so I am just referencing their compon
 I deal with the gradient being undefined when \\ $|x_1(k)-c_{i,1}| = |x_2(k)-c_{i,2}|$ 
 by breaking the tie and setting it to be [0, 1]. Implementing this gradient in code requires just an if else 
 statement. The restricted, linearized constraint now looks like \\
-$r_i - \norm{a_k - c_i}_\infty - \nabla(\norm{a_k - c_i}_\infty)^T(x(k)-a_k) \le 0$
+$r_i - \norm{a_k - c_i}_\infty - \nabla_{x_k}(\norm{a_k - c_i}_\infty)^T(x(k)-a_k) \le 0$, with 
+$\nabla_{x(k)}(\norm{a_k - c_i}_\infty)$ being $\nabla_{x(k)} \|x(k)-c_i\|_\infty$ evaluated at $x(k) = a_k$.
 
-We are now able to choose points that avoid square obstacles. However, the figure below illustrates are the following 2 issues:
+We are now able to choose points that avoid square obstacles. However, the figure below illustrates the following 2 issues:
 
-1. Chooses a local minimum instead of global. I can see a better solution just 
+\begin{enumerate}
+    \item The algorithm chooses a local minimum instead of global. I can see a better solution just 
 by looking at the picture.
-
-2. Even though the points don't go inside the squares, the lines that connect them 
+    \item Even though the points don't go inside the squares, the lines that connect them 
 do.
+\end{enumerate}
 
 The next few sections will solve both of these issues.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\linewidth]{SquareObstacles/ReportImages/goodExample.png}
-    \caption{Trajectory avoiding square obstacles.}
+    \includegraphics[width=0.3\linewidth]{SquareObstacles/ReportImages/goodExample.png}
     \label{fig:square-obstacles}
 \end{figure}
 
@@ -124,20 +121,21 @@ The next few sections will solve both of these issues.
 The first issue I approached was getting my trajectories with square obstacles to be global rather
 than local minimums. Chapter 4 is able to achieve this with circle obstacles by 
 relaxing the original nonconvex problem into a semi-definite program with 
-variables $x(1), ...., x(k)$ and new variables $X(k) = [1 x(k) x(k+1)]^{T}[1 x(k) x(k+1)]$ \cite{b1}.
-The variables $x(1), ..., x(k)$ are then used as the intial local trajectory for 
+variables $x(1), ...., x(k)$ and new variables $X(k) = [1, x(k), x(k+1)]^{T}[1, x(k), x(k+1)]$ \cite{b1}.
+The variables $x(1), ..., x(k)$ are then used as the initial local trajectory for 
 the Difference of Convex Functions method in the last section. This increases the 
 chances the Difference of Convex Functions method converges to a local optimum.
 
-I was unsuccessful in finding a way to relax the square obstacle constraints. The difficulty 
-comes from the infinity norm, which says a point isn't in a square as long as at least one 
-of several constraints is satisfied. To be specific, \\
-$r_{i}^2 - \norm{x(k)-c_i} = r_{i}^2 - max{x_{1}(k) - c_i, x_{2}{k} - c_i} \le 0$ \\
-Equivalently, we can write the constraints as \\
-$r_{i}^2 - $. THIS PART IM UNSURE ABOUT
+I was unsuccessful in finding a way to relax the square obstacle constraints. The relaxation method 
+in \cite{b1} depends on being able to express the path planning with obstacles problem as a nonconvex QCQP \cite{b1}. 
+What makes putting square obstacle constraints into QCQP form difficult is the infinity norm. 
+The constraint is of the form $\norm{x}_\infty \le a$, which means at least one element of vector x must be $\ge a$ for the constraint 
+to be satisfied. This condition resembles OR logic, where at least 1 constraint has to be satisfied for a point to be considered feasible, which is not the usual 
+form of optimization problems. I am not sure if the QCQP to SDP relaxation is possible for square 
+obstacles or not, so I opted for a temporary solution instead. 
 
-As a solution, I add an extra relaxation by making the square obstacles circles in 
-the semi-definite program. I also considered using a high norm to approximate the 
+As a temporary solution, I add an extra relaxation by replacing the square obstacles with circles in 
+the and do the usual SDP relaxation. I also considered using a high norm to approximate the 
 infinity norm, but coming up with new $P$ matrices for the SDP was difficult. I was 
 surprised that making the squares circles in the relaxation worked well. Below is a 
 figure that shows Difference of Convex Functions finding a global optimum with the 
@@ -146,13 +144,11 @@ addition of the SDP relaxation with circles.
 \begin{figure}[H]
     \centering
 
-    \includegraphics[width=0.32\linewidth]{SquareObstaclesRevised/ReportImages/goodExample1.png}
+    \includegraphics[width=0.3\linewidth]{SquareObstaclesRevised/ReportImages/goodExample1.png}
     \hfill
-    \includegraphics[width=0.32\linewidth]{SquareObstaclesRevised/ReportImages/goodExample2.png}
+    \includegraphics[width=0.3\linewidth]{SquareObstaclesRevised/ReportImages/goodExample2.png}
     \hfill
-    \includegraphics[width=0.32\linewidth]{SquareObstaclesRevised/ReportImages/goodExample3.png}
-
-    \caption{Examples of trajectories avoiding square obstacles.}
+    \includegraphics[width=0.3\linewidth]{SquareObstaclesRevised/ReportImages/goodExample3.png}
     \label{fig:square-obstacles-examples}
 \end{figure}
 
@@ -161,10 +157,9 @@ However, all 3 figures show the lines connecting the trajectory points still cro
 into the squares.
 
 In order to solve this issue, I began looking at different research papers.
-
 \section{Literature Review}
 
-"Semi-infinite programming for trajectory optimization with non-convex obstacles" by Kris Hauser 
+``Semi-infinite programming for trajectory optimization with non-convex obstacles'' by Kris Hauser 
 deals with enforcing collision constraints between discretized points on a trajectory \cite{b3}.
 Its solution is to use a semi-infinite-program (SDP), which is defined as the following in our problem's context:
 \begin{align}
@@ -189,13 +184,13 @@ x(K)=p_f.
 \nonumber
 \end{align}
 
-The introduction here is the scalar real number t. Adding t allows us to 
-check every point on the line connecting two adjacent points and enforce the 
+The introduction here is the scalar real number $t$. Adding $t$ allows us to 
+check every point on the line connecting two adjacent points enforces the 
 obstacle constraints. In theory, solving this optimization problem gives a 
 trajectory where no points and their lines connecting it ever overlap with obstacles.
 
 In general, directly solving SIP's can be difficult since optimization solvers 
-can not handle the continuous variable t in the constraints. What \cite{b3} suggests 
+can not handle the continuous variable $t$ in the constraints. What \cite{b3} suggests 
 instead is to find some $t^*$ that maximizes the left hand side of its constraint. 
 If we find $t^*$, we can determine whether it satisfies the constraint. If it doesn't,
 then the points $x(k)$ and $x(k+1)$ that form the line are infeasible, since there exists 
@@ -223,13 +218,13 @@ x(K)=p_f.
 \nonumber
 \end{align}
 
-Note I made $t^*$ $t_{i,k}^*$ to show it is unique to each obstacle constraint.
+Note I turned $t^*$ into $t_{i,k}^*$ to show it is a unique value for each obstacle constraint.
 For the sake of simplicity, I will now refer to $t^*$ as the $t$ that maximizes
 the left side of some arbitrary obstacle constraint. Since we choose $t^*$ such that \\
  $r_i-\|(1-t)x(k)+t\,x(k+1)-c_i\|_2 \le r_i-\|(1-t_{i,k}^*)x(k)+t_{i,k}^*\,x(k+1)-c_i\|_2, 
  \forall t\in[0,1]$, by transitivity enforcing the constraint \\
  $r_i-\|(1-t_{i,k}^*)x(k)+t_{i,k}^*\,x(k+1)-c_i\|_2 \le 0$ implies that \\
- $r_i-\|(1-t)x(k)+t\,x(k+1)-c_i\|_2 \le 0 \forall t\in[0,1]$.
+ $r_i-\|(1-t)x(k)+t\,x(k+1)-c_i\|_2 \le 0, \forall t\in[0,1]$.
 
 The question now is how we solve for $t^*$. In the next 2 sections, I will show 
 how to solve for it when are obstacles are circles versus when they are squares.
@@ -240,16 +235,15 @@ To make the math more simple, I am rewriting the obstacle constraints to the for
 $r_i \le \norm{(1-t)x(k)+t\,x(k+1)-c_i}_2$. 
 Now to make sure this constraint is satisfied for all $t$, we must find the 
 $t^*$ that minimizes the norm on the right side of the inequality. \\ 
-$\norm{(1-t)x(k)+t\,x(k+1)-c_i}_2$ is convex and differentiable, with respect to t, 
+$\norm{(1-t)x(k)+t\,x(k+1)-c_i}_2$ is convex and differentiable with respect to t, 
 so we know setting its derivative to 0 and getting solving for $t$ gives us the global minimum.
- So simplify the math we can instead take the equivalent constraint \\
- $r_i^2 \le \norm{(1-t)x(k)+t\,x(k+1)-c_i}_{2}^2$ and rewrite the right side as \\
- $\norm{a + bt}_{2}^2$, where $a = x(k) - c_i$ and $b = x(k+1) - x(k)$. The derivative 
+ To simplify the math further we can instead take the equivalent constraint \\
+ $r_i^2 \le \norm{(1-t)x(k)+t\,x(k+1)-c_i}_{2}^2$ and rewrite the right side as $\norm{a + bt}_{2}^2$, where $a = x(k) - c_i$ and $b = x(k+1) - x(k)$. The derivative 
  of $\norm{a + bt}_{2}^2$ with respect to t is \\
  $2a^T b + 2t\norm{b}_{2}^2$. The solution is \\
  $t = \frac{-a^T b}{\norm{b}_{2}^{2}} = \frac{-(x(k)-c_i)^T(x(k+1)-x(k))}{\norm{x(k+1)-x(k)}_{2}^{2}}$. 
  However, this solution is not necessarily $t^*$, since $t^*$ must in the interval 
- $[0,1]$. Thus we project the solution to 0 if it was negative, and 1 if it was positive. 
+ $[0,1]$. Thus we project the solution to 0 if it is negative, and 1 if it is positive. 
 
  Integrating these new constraints into the Difference of Convex Functions restrictions, we successfully 
  avoid obstacles in our entire trajectory. See the figures below.
@@ -257,13 +251,11 @@ so we know setting its derivative to 0 and getting solving for $t$ gives us the 
  \begin{figure}[H]
     \centering
 
-    \includegraphics[width=0.32\linewidth]{CircularSIP/ReportImages/goodExample1.png}
+    \includegraphics[width=0.3\linewidth]{CircularSIP/ReportImages/goodExample1.png}
     \hfill
-    \includegraphics[width=0.32\linewidth]{CircularSIP/ReportImages/goodExample2.png}
+    \includegraphics[width=0.3\linewidth]{CircularSIP/ReportImages/goodExample2.png}
     \hfill
-    \includegraphics[width=0.32\linewidth]{CircularSIP/ReportImages/goodExample3.png}
-
-    \caption{Examples of trajectories avoiding circular obstacles completely.}
+    \includegraphics[width=0.3\linewidth]{CircularSIP/ReportImages/goodExample3.png}
     \label{fig:circular-obstacles-examples}
 \end{figure}
 
@@ -276,11 +268,11 @@ a and b are 2 component vectors, so \\
 $\norm{a + bt}_{\infty} = max(|a_1+b_{1}t|, |a_2+b_{2}t|)$. Considering 
 different cases with the absolute value requires some effort, but doing some 
 calculations, the candidates that minimize the norm are the following:
-The norm can be rewritten as $\|(1-t)x(k) + t \cdot x(k+1) - c_i\|_\infty = \|a + bt\|_\infty$, where $a$ and $b$ are 2-component vectors. Thus, $\|a + bt\|_\infty = \max(|a_1+b_1t|, |a_2+b_2t|)$. Considering the different cases for the absolute values, the candidates minimizing the norm are:
 \[
 t \in \left\{ 0, 1, -\frac{a_1}{b_1}, -\frac{a_2}{b_2}, \frac{a_2 - a_1}{b_1 - b_2}, -\frac{a_1 + a_2}{b_1 + b_2} \right\}.
 \]
 Substituting a and b and plugging the candidate values $t$ in, we get:
+{\footnotesize
 \begin{align}
 t^*
 =
@@ -298,49 +290,47 @@ t^*
 \left|a_2+\frac{-a_1-a_2}{b_1+b_2}b_2\right|
 \right)
 \Big\}.
-\end{align}
+\end{align}}
             
-This looks confusing, so I added some notes that show my work inside my repository. 
+This looks confusing, so I added some notes inside my repository that show my work. 
 But the result of doing this is shown in the figures below, where now the square 
 obstacles are being completely avoided.
 
 \begin{figure}[H]
     \centering
 
-    \includegraphics[width=0.32\linewidth]{SquareSIP/ReportImages/goodExample1.png}
+    \includegraphics[width=0.3\linewidth]{SquareSIP/ReportImages/goodExample1.png}
     \hfill
-    \includegraphics[width=0.32\linewidth]{SquareSIP/ReportImages/goodExample2.png}
+    \includegraphics[width=0.3\linewidth]{SquareSIP/ReportImages/goodExample2.png}
     \hfill
-    \includegraphics[width=0.32\linewidth]{SquareSIP/ReportImages/goodExample3.png}
-
-    \caption{Examples of trajectories avoiding square obstacles completely.}
+    \includegraphics[width=0.3\linewidth]{SquareSIP/ReportImages/goodExample3.png}
     \label{fig:square-obstacles-examples}
 \end{figure}
 
 
 \section{Results}
 
-Below are some more examples of the path planning algorithm:
+Below are some more examples of the algorithm:
 \begin{figure}[H]
     \centering
 
-    \includegraphics[width=0.32\linewidth]{GoodExamples/goodExample1.png}
+    \includegraphics[width=0.3\linewidth]{GoodExamples/goodExample1.png}
     \hfill
-    \includegraphics[width=0.32\linewidth]{GoodExamples/goodExample2.png}
+    \includegraphics[width=0.3\linewidth]{GoodExamples/goodExample2.png}
     \hfill
-    \includegraphics[width=0.32\linewidth]{GoodExamples/goodExample3.png}
-    \includegraphics[width=0.32\linewidth]{BadExamples/badExample1.png}
+    \includegraphics[width=0.3\linewidth]{GoodExamples/goodExample3.png}
+    \includegraphics[width=0.3\linewidth]{BadExamples/badExample1.png}
     \hfill
-    \includegraphics[width=0.32\linewidth]{BadExamples/badExample2.png}
+    \includegraphics[width=0.3\linewidth]{BadExamples/badExample2.png}
     \hfill
-    \includegraphics[width=0.32\linewidth]{BadExamples/badExample3.png}
+    \includegraphics[width=0.3\linewidth]{BadExamples/badExample3.png}
     \label{fig:square-obstacles-examples}
 \end{figure}
 
 \section{Strengths/Limitation Discussion}
 A definite strength of the algorithm is it now is able to avoid obstacles completely. 
 However, I believe there's still room for improvement for the actual solutions 
-the algorithm finds. Take the bottom left figure above for example. By just 
+the algorithm finds. Take the bottom left figure in the results section for example. By just 
 looking at the path, I am suspicious that this is truly the global optimum. 
 Although I am not completely sure, I see a shorter path by going below all of the 
 circles. 
